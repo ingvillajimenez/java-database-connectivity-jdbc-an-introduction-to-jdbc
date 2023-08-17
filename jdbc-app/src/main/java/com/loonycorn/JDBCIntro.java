@@ -13,7 +13,16 @@ public class JDBCIntro {
         try (Connection conn = DBUtils.getMysqlConnection("DeliveryService")) {
 
             System.out.println("\n##############\n");
-            System.out.println("Retrieving all Delivery Partner details... \n");
+            System.out.println("Adding a new partner... \n");
+
+            int status = dpq.addNewDelPartner(conn,
+                    "Gav", "Comey", 17, true);
+
+            System.out.println("Status returned: " + status);
+            //Status returned: 1
+
+            System.out.println("\n##############");
+            System.out.println("Retrieving all Delivery Partner details...");
 
             ResultSet rs = dpq.getAllDelPartners(conn);
 
@@ -22,22 +31,15 @@ public class JDBCIntro {
                         + "\t" + rs.getString("last_name")
                         + "\t" + rs.getDouble("hourly_rate")
                         + "\t" + rs.getBoolean("is_fulltime"));
+                //Adam	Bell	18.5	true
+                //Eric	Jones	22.75	false
+                //Pam	Cruz	19.0	true
+                //Gav	Comey	17.0	true
             }
-
-            System.out.println("\n#############\n");
-            System.out.println("Retrieving the details of one partner...\n");
-
-            rs = dpq.getDelPartnerById(conn, 102);
-
-            rs.next();
-
-            System.out.println(rs.getString("first_name")
-                    + "\t" + rs.getString("last_name")
-                    + "\t" + rs.getDouble("hourly_rate")
-                    + "\t" + rs.getBoolean("is_fulltime"));
 
         }
         catch (SQLException ex) {
+
             ex.printStackTrace();
         }
 
