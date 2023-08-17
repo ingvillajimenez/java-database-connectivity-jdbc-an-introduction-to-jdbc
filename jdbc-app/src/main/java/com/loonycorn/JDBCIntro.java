@@ -1,6 +1,7 @@
 package com.loonycorn;
 
 import java.sql.Connection; // interface Connection
+import java.sql.ResultSet; // interface ResultSet
 import java.sql.SQLException; // class SQLException
 import java.sql.Statement; // interface Statement
 
@@ -15,10 +16,20 @@ public class JDBCIntro {
             String query = "select first_name, last_name, hourly_rate, is_fulltime " +
                     "from delpartners";
 
-            stmnt.executeQuery(query);
+            System.out.println("Now to iterate over the results... \n");
 
-            System.out.println("Query has been executed successfully");
-            //Query has been executed successfully
+            ResultSet rs = stmnt.executeQuery(query);
+
+            while (rs.next()) {
+                System.out.println(rs.getString("first_name")
+                        + "\t" + rs.getString("last_name")
+                        + "\t" + rs.getDouble("hourly_rate")
+                        + "\t" + rs.getBoolean("is_fulltime"));
+                //Adam	Bell	18.5	true
+                //Eric	Jones	22.75	false
+                //Pam	Cruz	19.0	true
+            }
+
         }
         catch (SQLException ex) {
 
