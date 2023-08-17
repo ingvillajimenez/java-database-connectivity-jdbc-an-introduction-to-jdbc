@@ -2,47 +2,28 @@ package com.loonycorn;
 
 import java.sql.Connection; // interface Connection
 import java.sql.SQLException; // class SQLException
-//import com.mysql.cj.jdbc.MysqlDataSource; // class MysqlDataSource
+import java.sql.Statement; // interface Statement
+
 public class JDBCIntro {
 
     public static void main(String[] args) {
 
-        try (Connection conn = DBUtils.getMysqlConnection(" ")) {
+        try (Connection conn = DBUtils.getMysqlConnection("DeliveryService")) {
 
-            if (conn != null) {
-                System.out.println("Connection has been established");
-                //Connection has been established
-            }
-            else {
-                System.out.println("Connection error");
-            }
+            Statement stmnt = conn.createStatement();
+
+            String query = "select first_name, last_name, hourly_rate, is_fulltime " +
+                    "from delpartners";
+
+            stmnt.executeQuery(query);
+
+            System.out.println("Query has been executed successfully");
+            //Query has been executed successfully
         }
         catch (SQLException ex) {
+
             ex.printStackTrace();
         }
-
-//        MysqlDataSource mysqlDS = null;
-//
-//        try {
-//            mysqlDS = new MysqlDataSource();
-//
-//            mysqlDS.setURL("jdbc:mysql://localhost:3306");
-//            mysqlDS.setUser("root");
-//            mysqlDS.setPassword("admin123");
-//
-//            Connection conn = mysqlDS.getConnection();
-//
-//            if (conn != null) {
-//                System.out.println("Connection has been established");
-//                //Connection has been established
-//            }
-//            else {
-//                System.out.println("Connection error");
-//            }
-//        }
-//        catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
 
     }
 }
