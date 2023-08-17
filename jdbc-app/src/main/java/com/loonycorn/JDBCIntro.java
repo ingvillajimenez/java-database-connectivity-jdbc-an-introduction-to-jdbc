@@ -3,36 +3,41 @@ package com.loonycorn;
 import java.sql.Connection; // interface Connection
 import java.sql.ResultSet; // interface ResultSet
 import java.sql.SQLException; // class SQLException
-import java.sql.Statement; // interface Statement
 
 public class JDBCIntro {
 
     public static void main(String[] args) {
 
+        DeliveryPartnerQueries dpq = new DeliveryPartnerQueries();
+
         try (Connection conn = DBUtils.getMysqlConnection("DeliveryService")) {
 
-            Statement stmnt = conn.createStatement();
+            System.out.println("\n##############\n");
+            System.out.println("Retrieving all Delivery Partner details... \n");
 
-            String query = "select first_name, last_name, hourly_rate, is_fulltime " +
-                    "from delpartners";
-
-            System.out.println("Now to iterate over the results... \n");
-
-            ResultSet rs = stmnt.executeQuery(query);
+            ResultSet rs = dpq.getAllDelPartners(conn);
 
             while (rs.next()) {
                 System.out.println(rs.getString("first_name")
                         + "\t" + rs.getString("last_name")
                         + "\t" + rs.getDouble("hourly_rate")
                         + "\t" + rs.getBoolean("is_fulltime"));
-                //Adam	Bell	18.5	true
-                //Eric	Jones	22.75	false
-                //Pam	Cruz	19.0	true
             }
+
+            System.out.println("\n#############\n");
+            System.out.println("Retrieving the details of one partner...\n");
+
+            rs = dpq.getDelPartnerById(conn, 102);
+
+            rs.next();
+
+            System.out.println(rs.getString("first_name")
+                    + "\t" + rs.getString("last_name")
+                    + "\t" + rs.getDouble("hourly_rate")
+                    + "\t" + rs.getBoolean("is_fulltime"));
 
         }
         catch (SQLException ex) {
-
             ex.printStackTrace();
         }
 
