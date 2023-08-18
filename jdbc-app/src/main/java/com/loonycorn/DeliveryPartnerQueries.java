@@ -69,4 +69,53 @@ public class DeliveryPartnerQueries {
         return status;
 
     }
+
+    public int applyPayAdjustment(Connection conn, double adjAmount, boolean isFT) {
+
+        int status = 0;
+
+        try {
+
+            String query = "update delpartners "
+                    + "set hourly_rate = hourly_rate + ?"
+                    + "where is_fulltime = ?";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setDouble(1, adjAmount);
+            ps.setBoolean(2, isFT);
+
+            status = ps.executeUpdate();
+
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return status;
+    }
+
+    public int deleteDeliveryPartner(Connection conn, int id) {
+
+        int status = 0;
+
+        try {
+
+            String query = "delete from delpartners "
+                    + "where id = ?";
+
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setDouble(1, id);
+
+            status = ps.executeUpdate();
+
+        }
+        catch (SQLException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return status;
+    }
+
 }

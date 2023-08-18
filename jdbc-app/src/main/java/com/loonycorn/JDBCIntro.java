@@ -12,17 +12,18 @@ public class JDBCIntro {
 
         try (Connection conn = DBUtils.getMysqlConnection("DeliveryService")) {
 
-            System.out.println("\n##############\n");
-            System.out.println("Adding a new partner... \n");
 
-            int status = dpq.addNewDelPartner(conn,
-                    "Gav", "Comey", 17, true);
+
+            System.out.println("###############");
+            System.out.println("Deleting the user with ID 101...\n");
+
+            int status = dpq.deleteDeliveryPartner(conn, 101);
 
             System.out.println("Status returned: " + status);
             //Status returned: 1
 
             System.out.println("\n##############");
-            System.out.println("Retrieving all Delivery Partner details...");
+            System.out.println("Retrieving all Delivery Partner details...\n");
 
             ResultSet rs = dpq.getAllDelPartners(conn);
 
@@ -31,11 +32,34 @@ public class JDBCIntro {
                         + "\t" + rs.getString("last_name")
                         + "\t" + rs.getDouble("hourly_rate")
                         + "\t" + rs.getBoolean("is_fulltime"));
-                //Adam	Bell	18.5	true
                 //Eric	Jones	22.75	false
-                //Pam	Cruz	19.0	true
-                //Gav	Comey	17.0	true
+                //Pam	Cruz	21.0	true
+                //Gav	Comey	19.0	true
             }
+
+//            System.out.println("#############");
+//            System.out.println("Updating hourly rates for FT partners...\n");
+//
+//            int status = dpq.applyPayAdjustment(conn, 2, true);
+//
+//            System.out.println("Status returned: " + status);
+//            //Status returned: 3
+//
+//            System.out.println("\n#############");
+//            System.out.println("Retrieving all Delivery Partner details...\n");
+//
+//            ResultSet rs = dpq.getAllDelPartners(conn);
+
+//            while (rs.next()) {
+//                System.out.println(rs.getString("first_name")
+//                        + "\t" + rs.getString("last_name")
+//                        + "\t" + rs.getDouble("hourly_rate")
+//                        + "\t" + rs.getBoolean("is_fulltime"));
+//                //Adam	Bell	20.5	true
+//                //Eric	Jones	22.75	false
+//                //Pam	Cruz	21.0	true
+//                //Gav	Comey	19.0	true
+//            }
 
         }
         catch (SQLException ex) {
